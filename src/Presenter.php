@@ -11,6 +11,8 @@ class Presenter implements JsonSerializable
     use Delegates;
     use GettersSetters;
 
+    protected $jsonEncodeCase = 'snake';
+
     public static function present(...$args)
     {
         return new static(...$args);
@@ -28,6 +30,11 @@ class Presenter implements JsonSerializable
         return $this;
     }
 
+    public function toJson()
+    {
+        return json_encode($this);
+    }
+
     public function jsonSerialize()
     {
         $results = [];
@@ -42,7 +49,7 @@ class Presenter implements JsonSerializable
 
         foreach (get_class_methods($this) as $method) {
             if (substr($method, 0, 3) === 'get' && substr($method, -9) === 'Attribute') {
-                $attribute = Str::snake(substr($method, 3, strlen($method) - 12));
+                $attribute = $this->convertStringCase(substr($method, 3, strlen($method) - 12));
                 if ($attribute) {
                     $results[$attribute] = $this->$attribute;
                 }
@@ -50,6 +57,11 @@ class Presenter implements JsonSerializable
         }
 
         return $results;
+    }
+
+    protected function convertStringCase($value)
+    {
+        return Str::{$this->jsonEncodeCase}($value);
     }
 
 }

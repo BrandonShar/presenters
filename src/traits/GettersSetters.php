@@ -38,12 +38,17 @@ trait GettersSetters
 
     protected function setAttribute($key, $attr)
     {
-        $this->attributes[Str::snake($key)] = $attr;
+        $this->attributes[$this->convertStringCase($key)] = $attr;
     }
 
     protected function getAttribute($key)
     {
-        return $this->attributes[Str::snake($key)] ?? null;
+        return $this->attributes[$this->convertStringCase($key)] ?? null;
+    }
+
+    protected function convertStringCase($value)
+    {
+        return Str::snake($value);
     }
 
     private function getGetterMethodName($attr)

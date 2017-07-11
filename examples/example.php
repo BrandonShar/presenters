@@ -24,6 +24,7 @@ class VehiclePresenter extends Presenter
 {
     protected $vehicle;
     protected $dealership;
+    protected $jsonEncodeCase = 'camel';
 
     protected $delegatesTo = [
         'vehicle'       => ['title', 'condition'],
@@ -54,6 +55,7 @@ $vehiclePresenter = VehiclePresenter::present($vehicle, $dealership)->tap(functi
 });
 
 echo json_encode($vehiclePresenter) . PHP_EOL;
+echo $vehiclePresenter->toJson() . PHP_EOL;
 
 //{"title":"2014 Fiat 500L","condition":"Used","name":"Value Cars","data_pulled_on":"Tuesday, Jul 11th","address":"Boston, MA"}
 
