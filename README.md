@@ -113,7 +113,13 @@ You can simply use the php function json_encode (presenters implement `JsonSeria
 ```php
 echo json_encode($presenter);
 ```
-OR if you use Laravel (and if you don't, you should strongly reconsider), you can just directly return presenters from any controller route and they'll be converted to json automatically!
+OR if you use Laravel (and if you don't, you should strongly reconsider), you can just directly return presenters from any controller route and they'll be converted to json automatically! 
+This is where the code really starts to get sexy:
+```php
+return VehicleOnCraigslistPresenter::present($vehicle, $vehicle->craiglistAd)->tap(function ($p) {
+  $p->cachedAt = date('Y-m-d');
+});
+```
 
 #### Wait, what is converted to JSON?
 Presenters automatically turn all of their delegates, any getters, and any variables that were manually set (through tap or otherwise) as JSON.
