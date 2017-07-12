@@ -10,6 +10,8 @@ Presenters have a number of great features. Let's see them all in action!
 
 #### Basic Presenter Example
 ```php
+use brandonshar\Presenter;
+
 class VehicleOnCraigslistPresenter extends Presenter 
 {
   protected $vehicle;
