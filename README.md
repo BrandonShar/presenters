@@ -52,7 +52,7 @@ $presenter->listedAt; // $presenter->craigslistAd->listedAt;
 ```
 Ok, a little cooler, right? What if we need something more complicated?
 #### Getters (Accessors)
-I like using "getter" instead of "accessor" because I'm just not that fancy. The presenter has getters that work just like Laravel's Eloquent getters: just create a method called getPropertyNameAttribute (if your property is called "propertyName") that optionally accepts a single argument (the currently set value of the named property) :
+The presenter has getters that work just like Laravel's Eloquent getters: just create a method called getPropertyNameAttribute (if your property is called "propertyName") that optionally accepts a single argument (the currently set value of the named property) :
 ```php
 class VehicleOnCraigslistPresenter extends Presenter
 {
@@ -82,19 +82,33 @@ $presenter->cachedAt = '2017-09-21';
 echo $presenter->cachedAt; //Thursday, Sept 21st
 ```
 **Note:** Wish you had a better way to put data on your presenter? Just hang tight for the tap method below!
-
+##### getAttribute
+If you need to access an attribute that isn't the attribute named in your getter, you should use the `getAttribute` method:
+```php
+return $this->getAttribute('cachedAt'); 
+//or (they both work the same)
+return $this->getAttribute('cached_at');
+```
+You could go directly to the `attributes` array property, but this requires you to make sure you match case with the json casting below (defaulting to snake_case). Because of this, the preferred way is to use the get (and corresponding set) attribute methods.
 #### Setters (Mutators)
 Technically, the presenters do have setters, but I haven't thought of a use case for them. They exist in order to aid the getters, but could be used standalone. I haven't thought of a real use case for them, but here's a quick example in case you do:
 ```php
 public function setSomeExampleAttribute($value)
 {
-  $this->setAttribute(strtoupper($value));
+  $this->setAttribute('someExample', strtoupper($value));
 }
 ```
 Now you can:
 ```php
 $presenter->someExample = 'my message';
 echo $presenter->someExample; //MY MESSAGE
+```
+##### setAttribute
+Just like getting above, the preferred way to set internal attributes is as follows:
+```php
+$this->setAttribute('someExample', $value);
+// or
+$this->setAttribute('some_example', $value);
 ```
 #### Tap
 I'm a sucker for fluid syntax and avoiding temporary variables, so if you want to add some instance variables to your presenter when it's instantiated, you can do so with the tap method:
@@ -127,16 +141,16 @@ return VehicleOnCraigslistPresenter::present($vehicle, $vehicle->craiglistAd)->t
 Presenters automatically turn all of their delegates, any getters, and any variables that were manually set (through tap or otherwise) as JSON.
 Our json from the presenter we've been building will look something like this:
 ```javascript
-{"year": 2015, "make": "Chevy", "listedAt": "2017-08-01", "vehicleTitle": "2015 Chevy Volt", "cachedAt": "Thursday, Sept 21st", "someExample": "MY MESSAGE"}
+{"year": 2015, "make": "Chevy", "listed_at": "2017-08-01", "vehicle_title": "2015 Chevy Volt", "cached_at": "Thursday, Sept 21st", "some_example": "MY MESSAGE"}
 ```
 
-#### But hang on, I prefer my JSON to be snake_cased? Is there any hope for me?
+#### But hang on, I prefer my JSON to be camelCase? Is there any hope for me?
 Oh come on, how on earth would we manage to make something like.. OH WAIT ONE SECOND
 ```php
 class VehicleOnCraigslistPresenter extends Presenter
 {
   //...
-  protected $jsonEncodeCase = 'snake';
+  protected $jsonEncodeCase = 'camel';
   //...
 }
 ```
