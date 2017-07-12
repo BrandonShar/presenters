@@ -52,7 +52,7 @@ $presenter->listedAt; // $presenter->craigslistAd->listedAt;
 ```
 Ok, a little cooler, right? What if we need something more complicated?
 #### Getters (Accessors)
-I like using "getter" instead of "accessor" because I'm just not that fancy. The presenter has getters that work just like Laravel's Eloquent getters:
+I like using "getter" instead of "accessor" because I'm just not that fancy. The presenter has getters that work just like Laravel's Eloquent getters: just create a method called getPropertyNameAttribute (if your property is called "propertyName") that optionally accepts a single argument (the currently set value of the named property) :
 ```php
 class VehicleOnCraigslistPresenter extends Presenter
 {
@@ -64,7 +64,7 @@ class VehicleOnCraigslistPresenter extends Presenter
   
   public function getCachedAtAttribute($currentValue)
   {
-    return DateTime::createFromFormat('Y-m-d', $passedInDate)->format('l, M jS');
+    return DateTime::createFromFormat('Y-m-d', $currentValue)->format('l, M jS');
   }
   //...
 }
