@@ -1,7 +1,11 @@
 # Presenters
 
 **WARNING** While this is tested, I have not used it in a production or extensively in a development environment yet. I'm pretty sure I'm going to love using it, but until I do that I feel obligated to offer a warning about its usefulness. 
-
+### Installation
+Install via composer and just start using it. Couldn't be easier!
+```
+composer require brandonshar/presenters
+```
 ### So what is this?
 Have you ever had a model, or combination of models, that you wanted to return with different data depending on the endpoint? Maybe you have a resource controller called `VehicleOnCraigslistController` and when someone hits your `VehicleOnCraigslistController@show` method, you want to return a set of data that represents a vehicle listed on Craigslist. This set of data is likely comprised of your `Vehicle` model and your `CraigslistAd` model, but different than what you return from your `VehicleController@show` method, your `CraigslistAdController@show`, or just a combination of the two. This is where **Presenters** come in to save the day!
 
