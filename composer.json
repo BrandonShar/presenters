@@ -1,5 +1,6 @@
 {
-    "description": "Presenter class",
+    "name":"brandonshar/presenters"
+    "description": "JSONable Presenters Objects",
     "require": {
         "php": ">=7"
     },
